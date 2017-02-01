@@ -1,0 +1,53 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+	
+			<title>Definitions</title>
+			<script src="d3.js" charset="utf-8"></script>
+			<script src="jquery-2.1.4.min.js" charset="utf-8"></script>
+			<script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body>
+		<svg swidth="1080px" height="768px"  style="height: 100%;width: 100%" >
+			<defs>
+			   <g id="ship">
+
+			   		<!-- ship deck-->
+				    <path d="M0,0 L10,20 L80,20 L90,0 L0,0" style="fill:none;stroke:black; stroke-width: 3px"/>
+				    <path d="M45,0 L45, -70" style="fill:none;stroke:black; stroke-width: 2px"/>
+
+
+			   </g>
+			</defs>
+		</svg>
+		
+		<script>
+
+		var ship = d3.select('body').select('svg').append("use").attr("x", 50).attr("y", 250).attr("xlink:href", "#ship");
+			
+		   // var ship = d3.select('body').select('svg').append("use").attr("x", 50).attr("y", 250).attr("xlink:href", "#ship");
+
+     //       var x = 50;
+     //       var y = 250;
+
+		   // (function repeat() {
+		   // 	        if (x>300) 
+		   // 	        {
+
+		   // 	        	x = 50;	
+		   // 	        }else{
+		   // 	        	x=x+10;
+		   // 	        }
+     //                d3.select(ship).node()
+     //             .transition().duration(500).ease("linear")
+     //               .attr("x", x)
+     //               .each("end", repeat);
+     //        	})();
+
+
+
+		</script>
+
+	</body>
+</html>
+
