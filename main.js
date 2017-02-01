@@ -24,6 +24,27 @@ http.listen(3000, function () {
 
 io.on('connection', function(socket){
   console.log('a user connected');
+
+   /* 
+  socket.on('login_req', function(data) {
+          io.to(socket.id).emit("login_res",{ IsValid: "True" });
+
+        
+    	 if (data["username"]==sys_user && data["password"]==sys_pwd) {
+            io.to(socket.id).emit("login_res",{ IsValid: "True" });
+         }else{
+             io.to(socket.id).emit("login_res",{ IsValid: "False" });
+         }
+        
+    });
+    */
+
+     socket.on('moveRequest', function(data) {
+
+     	 var direct = data["direction"];
+         console.log("The client:" + socket.id + " requested to " +direct);
+         io.to(socket.id).emit("moveResponse", {direction: direct});
+    });
 });
 
 

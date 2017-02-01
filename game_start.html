@@ -2,9 +2,10 @@
 <html>
 	<head>
 	
-			<title>Definitions</title>
+			<title>Pirate Clash</title>
 			<script src="d3.js" charset="utf-8"></script>
 			<script src="jquery-2.1.4.min.js" charset="utf-8"></script>
+			<script src="keybinding.js" charset="utf-8"></script>
 			<script src="/socket.io/socket.io.js"></script>
 	</head>
 	<body>
@@ -21,30 +22,70 @@
 			</defs>
 		</svg>
 		
-		<script>
+		<script type="text/javascript">
+            var ship;
 
-		var ship = d3.select('body').select('svg').append("use").attr("x", 50).attr("y", 250).attr("xlink:href", "#ship");
-			
-		   // var ship = d3.select('body').select('svg').append("use").attr("x", 50).attr("y", 250).attr("xlink:href", "#ship");
+			var socketio = io.connect("127.0.0.1:3000");
 
-     //       var x = 50;
-     //       var y = 250;
+			socketio.on("moveResponse", function(data) {
+				var direct = data['direction'];
+                var x = d3.select(ship).node().attr("x");
+                var y = d3.select(ship).node().attr("y");
+               
+				switch(direct){
+					case "left":
+					  d3.select(ship).node().transition().duration(500).ease("linear").attr("x", (parseInt(x)-10));
+					break;
+					case "up":
+					  d3.select(ship).node().transition().duration(500).ease("linear").attr("y", (parseInt(y)-10));
+					break;
+					case "right":
+					  d3.select(ship).node().transition().duration(500).ease("linear").attr("x", (parseInt(x)+10));
+					break;
+					case "down":
+					  d3.select(ship).node().transition().duration(500).ease("linear").attr("y", (parseInt(y)+10));
+					break;
+					default:
+					 break;
+				}
 
-		   // (function repeat() {
-		   // 	        if (x>300) 
-		   // 	        {
-
-		   // 	        	x = 50;	
-		   // 	        }else{
-		   // 	        	x=x+10;
-		   // 	        }
-     //                d3.select(ship).node()
-     //             .transition().duration(500).ease("linear")
-     //               .attr("x", x)
-     //               .each("end", repeat);
-     //        	})();
+				console.log("current x:" +x);
+                console.log("current y:" +y);
+			});
 
 
+		   function move(direct) {
+		   	  return function(event) {
+			        event.preventDefault();
+				    socketio.emit("moveRequest", { direction : direct});
+			    };
+		   	    
+		   }
+
+		   ship = d3.select('body').select('svg').append("use").attr("x", 50).attr("y", 250).attr("xlink:href", "#ship");
+
+           d3.select('body').call(d3.keybinding()
+		    .on('←', move("left"))
+		    .on('↑', move("up"))
+		    .on('→', move("right"))
+		    .on('↓', move("down")));
+           
+           /*
+		   (function repeat() {
+		   	        if (x>300) 
+		   	        {
+
+		   	        	x = 50;	
+		   	        }else{
+		   	        	x=x+10;
+		   	        }
+                    d3.select(ship).node()
+                 .transition().duration(500).ease("linear")
+                   .attr("x", x)
+                   .each("end", repeat);
+            	})();
+
+			*/
 
 		</script>
 
